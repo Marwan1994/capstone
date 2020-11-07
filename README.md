@@ -28,6 +28,15 @@ jenkins ALL=(ALL) NOPASSWD: ALL
 configure docker hub credentials
 Push image to docker hub
 ==========================================================================
+# install Docker
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt update
+apt-cache policy docker-ce
+sudo apt install docker-ce
+
 # https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html#install-eksctl-linux
 # install eksctl
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
