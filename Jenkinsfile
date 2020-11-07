@@ -29,57 +29,57 @@ pipeline {
               }*/
             stage('Build image') {
                 steps {
-                    sh 'docker build -t capstone-proj .'
+                    sh 'sudo docker build -t capstone-proj .'
                 }
             }
             stage('Push image to Repo'){
                 steps {
                     withDockerRegistry([url: '', credentialsId: 'dockerhub-cred']) {
-                        sh 'docker tag capstone-proj elnaggar3012/capstone-proj'
-                        sh 'docker push elnaggar3012/capstone-proj'
+                        sh 'sudo docker tag capstone-proj marwanabdelhafez/capstone-proj'
+                        sh 'sudo docker push elnaggar3012/capstone-proj'
                     }
                 }
             }
             stage('Create K8s cluster') {
                 steps {
-                    sh 'echo creating EKS cluster'
+                    sh 'sudo echo creating EKS cluster'
                     withAWS(credentials: 'aws', region: 'us-east-2') {
-                    sh 'eksctl create cluster --name capstone-proj-cluster  --region us-east-2 --nodegroup-name capstone-proj-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
+                    sh 'sudo eksctl create cluster --name capstone-proj-cluster  --region us-east-2 --nodegroup-name capstone-proj-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
                     }
                 }
             }
             stage('Generate kubeconfig') {
                 steps {
                     withAWS(credentials: 'aws', region: 'us-east-2') {
-                    sh 'aws eks --region us-east-2 update-kubeconfig --name capstone-proj-cluster'
+                    sh 'sudo aws eks --region us-east-2 update-kubeconfig --name capstone-proj-cluster'
                  } 
                 }
             }
             stage('Rollout deployment') {
                 steps {
                     withAWS(credentials: 'aws', region: 'us-east-2') {
-                    sh 'kubectl apply -f deployment.yml'
+                    sh 'sudo kubectl apply -f deployment.yml'
                     } 
                 }
             }
             stage('Check Deployment') {
                 steps {
                     withAWS(credentials: 'aws', region: 'us-east-2') {
-                    sh 'kubectl get nodes'
-                    sh 'kubectl get deployment'
-                    sh 'kubectl get pod'
-                    sh 'kubectl get service/capstone-LB-service'
+                    sh 'sudo kubectl get nodes'
+                    sh 'sudo kubectl get deployment'
+                    sh 'sudo kubectl get pod'
+                    sh 'sudo kubectl get service/capstone-LB-service'
                     } 
                 }
             }
             stage('Purge system') {
                 steps {
-                echo 'purge system'
-                sh 'docker system prune'
-                sh 'eksctl delete cluster --cluster=capstone-proj-cluster'
-                sh 'eksctl delete nodegroup --cluster=capstone-proj-cluster --name=capstone-proj-nodes'
-                sh 'aws cloudformation delete-stack --stack-name eksctl-capstone-proj-cluster-nodegroup-capstone-proj-nodes'
-                sh 'aws cloudformation delete-stack --stack-name eksctl-capstone-proj-cluster-cluster'
+                echo 'sudo purge system'
+                sh 'sudo docker system prune'
+                sh 'sudo eksctl delete cluster --cluster=capstone-proj-cluster'
+                sh 'sudo eksctl delete nodegroup --cluster=capstone-proj-cluster --name=capstone-proj-nodes'
+                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-proj-cluster-nodegroup-capstone-proj-nodes'
+                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-proj-cluster-cluster'
              }
             }   
     }
