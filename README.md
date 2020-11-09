@@ -52,6 +52,9 @@ kubectl version --short --client
 # Add user jenkins to group docker
 sudo usermod -aG docker ubuntu
 =========================================================================
+# create & Attaching an IAM role to an instance
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html#attach-iam-role
+
 
 Create Kuberentes cluster
 Generate Kubeconfig file
