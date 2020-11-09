@@ -22,7 +22,7 @@ pipeline {
          }     */    
          /*stage('Upload to AWS') {
               steps {
-                  withAWS(region:'us-east-2',credentials:'aws') {
+                  withAWS(region:'us-east-2',credentials:'capstone') {
                   sh 'echo "Uploading content with AWS creds"'
                       s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'index.html', bucket:'udacity-proj03')
                   }
@@ -44,7 +44,7 @@ pipeline {
             stage('Create K8s cluster') {
                 steps {
                     sh 'sudo echo creating EKS cluster'
-                    withAWS(credentials: 'aws', region: 'us-east-2') {
+                    withAWS(credentials: 'capstone', region: 'us-east-2') {
                     sh 'sudo eksctl create cluster --name capstone-proj-cluster  --region us-east-2 --nodegroup-name capstone-proj-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
                     }
                 }
