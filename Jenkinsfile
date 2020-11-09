@@ -51,21 +51,21 @@ pipeline {
             }
             stage('Generate kubeconfig') {
                 steps {
-                    withAWS(credentials: 'aws', region: 'us-east-2') {
+                    withAWS(credentials: '', region: '') {
                     sh 'sudo aws eks --region us-east-2 update-kubeconfig --name capstone-proj-cluster'
                  } 
                 }
             }
             stage('Rollout deployment') {
                 steps {
-                    withAWS(credentials: 'aws', region: 'us-east-2') {
+                    withAWS(credentials: '', region: '') {
                     sh 'sudo kubectl apply -f deployment.yml'
                     } 
                 }
             }
             stage('Check Deployment') {
                 steps {
-                    withAWS(credentials: 'aws', region: 'us-east-2') {
+                    withAWS(credentials: '', region: '') {
                     sh 'sudo kubectl get nodes'
                     sh 'sudo kubectl get deployment'
                     sh 'sudo kubectl get pod'
