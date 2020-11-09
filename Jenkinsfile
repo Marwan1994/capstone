@@ -45,14 +45,14 @@ pipeline {
                 steps {
                     sh 'sudo echo creating EKS cluster'
                     withAWS(credentials: '', region: '') {
-                         sh 'sudo eksctl create cluster --name capstone-proj-cluster  --region us-east-2 --nodegroup-name capstone-proj-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
+                         sh 'sudo eksctl create cluster --name capstone-cluster  --region us-east-2 --nodegroup-name capstone-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
                     }
                 }
             }
             stage('Generate kubeconfig') {
                 steps {
                     withAWS(credentials: '', region: '') {
-                    sh 'sudo aws eks --region us-east-2 update-kubeconfig --name capstone-proj-cluster'
+                    sh 'sudo aws eks --region us-east-2 update-kubeconfig --name capstone-cluster'
                  } 
                 }
             }
@@ -77,10 +77,10 @@ pipeline {
                 steps {
                 echo 'sudo purge system'
                 sh 'sudo docker system prune'
-                sh 'sudo eksctl delete cluster --cluster=capstone-proj-cluster'
-                sh 'sudo eksctl delete nodegroup --cluster=capstone-proj-cluster --name=capstone-proj-nodes'
-                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-proj-cluster-nodegroup-capstone-proj-nodes'
-                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-proj-cluster-cluster'
+                sh 'sudo eksctl delete cluster --cluster=capstone-cluster'
+                sh 'sudo eksctl delete nodegroup --cluster=capstone-cluster --name=capstone-nodes'
+                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-cluster-nodegroup-capstone-nodes'
+                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-cluster-cluster'
              }
             }   
     }
