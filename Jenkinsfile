@@ -34,7 +34,7 @@ pipeline {
             }
             stage('Push image to Repo'){
                 steps {
-                    withDockerRegistry([url: '', credentialsId: 'dockerhub-cred']) {
+                    withDockerRegistry([url: '', credentialsId: '']) {
                         sh 'sudo docker login -u "marwanabdelhafez" -p "FEzo1866?" '
                         sh 'sudo docker tag capstone-proj marwanabdelhafez/capstone-proj'
                         sh 'sudo docker push marwanabdelhafez/capstone-proj:latest'
