@@ -37,7 +37,7 @@ pipeline {
                     withDockerRegistry([url: '', credentialsId: 'dockerhub-cred']) {
                         sh 'sudo docker login -u "marwanabdelhafez" -p "FEzo1866?" '
                         sh 'sudo docker tag capstone-proj marwanabdelhafez/capstone-proj'
-                        sh 'sudo docker push marwanabdelhafez/capstone-proj'
+                        sh 'sudo docker push marwanabdelhafez/capstone-proj:latest'
                     }
                 }
             }
