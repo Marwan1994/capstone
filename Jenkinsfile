@@ -44,9 +44,9 @@ pipeline {
             stage('Create K8s cluster') {
                 steps {
                     sh 'sudo echo creating EKS cluster'
-                    withAWS(credentials: '', region: '') {
+                    
                     sh 'sudo eksctl create cluster --name capstone-proj-cluster  --region us-east-2 --nodegroup-name capstone-proj-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
-                    }
+                    
                 }
             }
             stage('Generate kubeconfig') {
