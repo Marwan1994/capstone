@@ -13,6 +13,7 @@ pipeline {
          stage('Lint HTML') {
               steps {
                   sh 'tidy -q -e *.html'
+                  sh 'hadolint Dockerfile'
               }
          }
         /*stage('Security Scan') {
@@ -45,14 +46,14 @@ pipeline {
                 steps {
                     sh 'sudo echo creating EKS cluster'
                     withAWS(credentials: '', region: '') {
-                         sh 'sudo eksctl create cluster --name capstone-cluster  --region us-east-2 --nodegroup-name capstone-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
+                         sh 'sudo eksctl create cluster --name capstone-final-proj  --region us-east-2 --node-type t2.micro --nodegroup-name capstone-final-proj-nodes --nodes 2 --nodes-min 1 --nodes-max 3 --managed'
                     }
                 }
             }
             stage('Generate kubeconfig') {
                 steps {
                     withAWS(credentials: '', region: '') {
-                    sh 'sudo aws eks --region us-east-2 update-kubeconfig --name capstone-cluster'
+                    sh 'sudo aws eks --region us-east-2 update-kubeconfig --name capstone-final-proj'
                  } 
                 }
             }
@@ -77,10 +78,10 @@ pipeline {
                 steps {
                 echo 'sudo purge system'
                 sh 'sudo docker system prune'
-                sh 'sudo eksctl delete cluster --cluster=capstone-cluster'
-                sh 'sudo eksctl delete nodegroup --cluster=capstone-cluster --name=capstone-nodes'
-                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-cluster-nodegroup-capstone-nodes'
-                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-cluster-cluster'
+                sh 'sudo eksctl delete cluster --cluster=capstone-final-proj'
+                sh 'sudo eksctl delete nodegroup --cluster=capstone-final-proj --name=capstone-final-proj-nodes'
+                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-final-proj-nodegroup-capstone-final-proj-nodes'
+                sh 'sudo aws cloudformation delete-stack --stack-name eksctl-capstone-final-proj-cluster'
              }
             }   
     }
