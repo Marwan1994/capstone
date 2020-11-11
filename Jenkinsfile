@@ -16,18 +16,7 @@ pipeline {
                   sh 'hadolint Dockerfile'
               }
          }
-        /*stage('Security Scan') {
-              steps { 
-                 aquaMicroscanner imageName: 'alpine:latest', notCompleted: 'exit 1', onDisallowed: 'fail'
-              }
-         }         */
-         /*stage('Upload to AWS') {
-              steps {
-                  withAWS(region:'us-east-2',credentials:'capstone') {
-                  sh 'echo "Uploading content with AWS creds"'
-                      s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'index.html', bucket:'udacity-proj03')
-                  }
-              }*/
+
             stage('Build image') {
                 steps {
                     sh 'sudo docker build -t capstone-proj .'
